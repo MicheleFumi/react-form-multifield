@@ -36,17 +36,18 @@ export default function AppMain() {
         setTitles(newTitles)
     }
 
-    function handleChangeTitle(e) {
-        const titleToChange = Number(e.target.getAttribute('data-index'));
-        const newModifiedTitle = prompt("Modifica il titolo", titles[titleToChange])
-        const updatedTitles = titles.map((title, index) => {
-            if (index === titleToChange) {
+    function handleChangeTitle(index) {
+        const newModifiedTitle = prompt("Modifica il titolo", titles[index].title);
 
-                return newModifiedTitle
-            }
-            return title
-        });
-        setTitles(updatedTitles)
+        if (newModifiedTitle !== null && newModifiedTitle !== '') {
+            const updatedTitles = titles.map((title, i) => {
+                if (i === index) {
+                    return { ...title, title: newModifiedTitle };
+                }
+                return title;
+            });
+            setTitles(updatedTitles);
+        }
     }
     function handleFormField(e) {
         const { name, value, type, checked } = e.target;
@@ -55,26 +56,6 @@ export default function AppMain() {
             [name]: type === 'checkbox' ? checked : value
         });
     }
-
-
-    function handleFormField(e) {
-        //console.log(e.target);
-
-
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-
-        setFormData({
-            ...formData,
-            [e.target.name]: value
-        })
-    }
-
-
-
-
-
-
-
 
 
     return (
@@ -108,7 +89,12 @@ export default function AppMain() {
 
                 <h2 >Titoli Di Oggi</h2>
                 <ul className="list-group mt-4  ">
-                    {titles.map((title, index) => <li className="list-group-item d-flex justify-content-between mx-4" key={index}>{title.title}
+                    {titles.map((title, index) => <li className="list-group-item d-flex justify-content-between mx-4" key={index}>
+                        <div>
+                            <h3>{title.title}</h3>
+                            <div><strong>Piattaforme:</strong> {title.platforms}</div>
+                            <div><strong>Autore:</strong> {title.author}</div>
+                        </div>
                         <div>
                             <button className='btn btn-warning me-2' onClick={handleChangeTitle} data-index={index}>Cambia</button>
                             <button className='btn btn-danger' onClick={handleRemoveTitle} data-index={index}>Rimuovi</button>
