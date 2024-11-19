@@ -12,17 +12,17 @@ const initialFormData =
 export default function AppMain() {
 
     const [titles, setTitles] = useState(titleArray)
-    const [newTitles, setNewTitles] = useState('')
     const [formData, setFormData] = useState(initialFormData)
 
 
     function handleFormSubmit(e) {
         e.preventDefault()
-        console.log('Form sent', formData);
-        const newItem = {
+
+        const newTitle = {
+            id: Date.now(),
             ...formData
         }
-        console.log(e.target.name, e.target.value, e.target.checked);
+        setTitles([...titles, newTitle])
         setFormData(initialFormData);
 
     }
@@ -31,7 +31,7 @@ export default function AppMain() {
 
     function handleRemoveTitle(e) {
         const titleToRemove = Number(e.target.getAttribute('data-index'))
-        const newTitles = titles.filter((title, index) => titleToRemove != index)
+        const newTitles = titles.filter(index => titleToRemove != index)
 
         setTitles(newTitles)
     }
@@ -47,6 +47,13 @@ export default function AppMain() {
             return title
         });
         setTitles(updatedTitles)
+    }
+    function handleFormField(e) {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value
+        });
     }
 
 
