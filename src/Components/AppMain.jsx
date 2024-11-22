@@ -50,15 +50,6 @@ export default function AppMain() {
         setTitles(updatedTitles)
 
 
-        /* if (newModifiedTitle !== null && newModifiedTitle !== '') {
-            const updatedTitles = titles.map((title, i) => {
-                if (i === index) {
-                    return { ...title, title: newModifiedTitle };
-                }
-                return title;
-            });
-            setTitles(updatedTitles);
-        } */
     }
     function handleFormField(e) {
         const { name, value, type, checked } = e.target;
