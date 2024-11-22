@@ -31,15 +31,26 @@ export default function AppMain() {
 
     function handleRemoveTitle(e) {
         const titleToRemove = Number(e.target.getAttribute('data-index'))
-        const newTitles = titles.filter(index => titleToRemove != index)
-
+        const newTitles = titles.filter((title, index) => index !== titleToRemove);
         setTitles(newTitles)
     }
 
-    function handleChangeTitle(index) {
-        const newModifiedTitle = prompt("Modifica il titolo", titles[index].title);
+    function handleChangeTitle(e) {
 
-        if (newModifiedTitle !== null && newModifiedTitle !== '') {
+        const selectedTitle = e.target.getAttribute('data-id')
+
+        const newModifiedTitle = prompt("Modifica il titolo", selectedTitle);
+        e.preventDefault()
+        const updatedTitles = titles.map(title => {
+            if (title.title === selectedTitle) { // Confronta con il titolo originale
+                return { ...title, title: newModifiedTitle }; // Aggiorna solo il titolo corrispondente
+            }
+            return title;
+        });
+        setTitles(updatedTitles)
+
+
+        /* if (newModifiedTitle !== null && newModifiedTitle !== '') {
             const updatedTitles = titles.map((title, i) => {
                 if (i === index) {
                     return { ...title, title: newModifiedTitle };
@@ -47,7 +58,7 @@ export default function AppMain() {
                 return title;
             });
             setTitles(updatedTitles);
-        }
+        } */
     }
     function handleFormField(e) {
         const { name, value, type, checked } = e.target;
@@ -96,7 +107,7 @@ export default function AppMain() {
                             <div><strong>Autore:</strong> {title.author}</div>
                         </div>
                         <div>
-                            <button className='btn btn-warning me-2' onClick={handleChangeTitle} data-index={index}>Cambia</button>
+                            <button className='btn btn-warning me-2' onClick={handleChangeTitle} data-id={title.title}>Cambia</button>
                             <button className='btn btn-danger' onClick={handleRemoveTitle} data-index={index}>Rimuovi</button>
                         </div>
 
